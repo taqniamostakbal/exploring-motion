@@ -548,6 +548,8 @@ function buildTimeline() {
     tick.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); ruler.appendChild(tick);
   }
   buildTimelineRows(); updatePlayhead();
+  const ph = $('#playhead');
+  if (ph) ph.style.height = ($('#ruler').offsetHeight + $('#rows').offsetHeight) + 'px';
 }
 function buildTimelineRows() {
   const p = state.project, rows = $('#rows'); rows.innerHTML = ''; rows.style.width = (p.duration * state.pxPerSec) + 'px';
@@ -563,7 +565,9 @@ function buildTimelineRows() {
       audioBadge = aIdx % 2 === 0 ? '<span class="audio-badge">&#9834;</span>'
         : '<span class="audio-badge"><svg viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.6V5.4L7.5 9.5H4z" fill="#fff" stroke="none"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg></span>';
     }
-    bar.innerHTML = `<div class="bar-name">${audioBadge}${layer.name}</div>`;
+    const TYPE_BADGE = { text: 'T', camera: '<svg viewBox="0 0 24 24"><rect x="3" y="8" width="13" height="9" rx="2" fill="#fff" stroke="none"/><path d="M16 10.8l5-2.6v8.6l-5-2.6z" fill="#fff" stroke="none"/></svg>', null: '&#8857;', group: '&#10697;', 'shape-rect': '&#9632;', 'shape-circle': '&#9679;', 'shape-triangle': '&#9650;', 'shape-pentagon': '&#11039;', 'shape-star': '&#9733;', 'shape-spark': '&#10022;', 'shape-heart': '&#10084;', 'shape-arrow': '&#10132;' };
+    const typeBadge = audioBadge || (TYPE_BADGE[layer.type] ? '<span class="type-badge">' + TYPE_BADGE[layer.type] + '</span>' : '');
+    bar.innerHTML = `<div class="bar-name">${typeBadge}${layer.name}</div>`;
     if (layer.type === 'video') {
       const tab = document.createElement('span'); tab.className = 'strip-tab'; tab.textContent = layer._stripHidden ? '›' : '‹';
       tab.title = 'Show / hide the filmstrip';

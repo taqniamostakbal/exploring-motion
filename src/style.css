@@ -292,3 +292,15 @@ button,input,select{ font-family:inherit }
 .audio-badge svg { width: 17px; height: 17px; }
 #ruler { background: #edf0f4; }
 .tick { color: #8a94a6; font-size: 10px; font-weight: 600; }
+
+/* M5d: EVERY layer bar at the same chunky reference scale — no thin bars left */
+.tl-row { height: 66px; }
+.tl-bar { height: 56px; top: 5px; border-radius: 13px; font-size: 12.5px; padding: 6px 10px; }
+.tl-bar .bar-name { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: .2px; }
+.tl-bar.bar-video .bar-name, .tl-bar.bar-image .bar-name { display: none; }
+.tl-bar.bar-video.strip-off .bar-name { display: flex; }
+.type-badge { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; flex: 0 0 30px; border-radius: 9px; background: #00000030; color: #fff; font-size: 16px; box-shadow: inset 0 1px 0 #ffffff30; }
+.type-badge svg { width: 17px; height: 17px; }
+#timeline { max-height: 308px; overflow-y: auto; }
+#ruler { position: sticky; top: 0; z-index: 7; }
+#playhead { z-index: 9; }
