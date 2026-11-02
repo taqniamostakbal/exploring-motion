@@ -241,7 +241,7 @@ button,input,select{ font-family:inherit }
 #timelineWrap { position: relative; }
 .tl-bar { position: relative; }
 .tl-bar.bar-video { background: linear-gradient(180deg, #6366f1, #4338ca 55%, #3730a3); border-color: #a5b4fc; }
-.tl-bar.bar-audio { background: linear-gradient(90deg, #fb923c, #f97316 40%, #9333ea); border-color: #fdba74; }
+.tl-bar.bar-audio { background: linear-gradient(180deg, #ffa03d, #f97316 55%, #ea580c); border-color: #fdba74; }
 .filmstrip { position: absolute; inset: 0; display: flex; overflow: hidden; border-radius: inherit; }
 .filmstrip img { flex: 1 1 0; min-width: 0; height: 100%; object-fit: cover; opacity: .94; }
 .tl-bar .bar-name { position: relative; z-index: 2; text-shadow: 0 1px 3px #000a; }
@@ -252,3 +252,26 @@ button,input,select{ font-family:inherit }
 #clipTools button:hover { background: #eef4ea; color: #0d8a3a; }
 #clipTools button:disabled { opacity: .35; cursor: default; }
 #clipTools button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* M5b: media rows at reference scale — tall filmstrip/waveform bars, big orange clip toolbar, pin playhead */
+.tl-row.tall { height: 66px; }
+.tl-bar.bar-video, .tl-bar.bar-audio { height: 56px; border-radius: 13px; font-size: 13px; }
+.tl-bar.bar-video { background: linear-gradient(180deg, #ffb020, #f59e0b 60%, #d97706); border-color: #fbbf24; }
+.filmstrip { gap: 3px; padding: 3px; }
+.filmstrip img { border-radius: 9px; }
+.tl-bar.bar-video .bar-name { display: none; }
+.tl-bar.bar-audio { padding: 6px 10px; }
+.tl-bar.bar-audio.alt { background: linear-gradient(180deg, #b45cff, #9333ea 55%, #7e22ce); border-color: #d8b4fe; }
+.tl-bar.bar-audio .bar-name { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: .2px; }
+.audio-badge { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; flex: 0 0 30px; border-radius: 9px; background: #c2410ccc; color: #fff; font-size: 17px; box-shadow: inset 0 1px 0 #ffffff38; }
+.tl-bar.bar-audio.alt .audio-badge { background: #6d28d9cc; }
+.wavecv { height: 20px; bottom: 3px; opacity: .95; }
+.tl-row.sel .tl-bar.bar-video, .tl-row.sel .tl-bar.bar-audio { box-shadow: 0 0 0 2.5px #f59e0b, inset 0 1px 0 #ffffff50; }
+#playhead { background: #f59e0b; box-shadow: 0 0 8px #f59e0b88; }
+#playhead::before { content: ''; position: absolute; top: 0; left: 50%; width: 15px; height: 19px; transform: translateX(-50%); background: #f59e0b; clip-path: polygon(50% 100%, 6% 60%, 6% 22%, 24% 0, 76% 0, 94% 22%, 94% 60%); }
+#clipTools { top: 40px; gap: 0; padding: 4px; border: none; border-radius: 15px; background: linear-gradient(180deg, #ffb020, #f59e0b 60%, #ea580c); box-shadow: 0 12px 28px #b4530950; }
+#clipTools button { width: 38px; height: 36px; border-radius: 11px; color: #fff; font-size: 15px; }
+#clipTools button:hover { background: #ffffff2e; color: #fff; }
+#clipTools button:disabled { opacity: .45; }
+#clipTools button svg { width: 19px; height: 19px; stroke-width: 1.9; }
+#clipTools button + button { border-left: 1px solid #ffffff33; }

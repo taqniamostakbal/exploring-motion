@@ -553,9 +553,14 @@ function buildTimelineRows() {
   const p = state.project, rows = $('#rows'); rows.innerHTML = ''; rows.style.width = (p.duration * state.pxPerSec) + 'px';
   for (const layer of p.layers) {
     const row = document.createElement('div'); row.className = 'tl-row' + (layer.id === state.selectedId ? ' sel' : '');
+    if (layer.type === 'video' || layer.type === 'audio') row.classList.add('tall');
     const bar = document.createElement('div'); bar.className = 'tl-bar' + (layer.type === 'camera' ? ' cam' : layer.type === 'text' ? ' bar-text' : layer.type === 'image' ? ' bar-image' : layer.type === 'video' ? ' bar-video' : layer.type === 'audio' ? ' bar-audio' : layer.type === 'null' ? ' bar-null' : layer.type === 'group' ? ' bar-group' : '');
     bar.style.left = (layer.start * state.pxPerSec) + 'px'; bar.style.width = Math.max(24, layer.duration * state.pxPerSec) + 'px';
-    bar.innerHTML = `<div class="bar-name">${layer.name}</div>`;
+    if (layer.type === 'audio') {
+      const aIdx = p.layers.slice(0, p.layers.indexOf(layer)).filter(l => l.type === 'audio').length;
+      if (aIdx % 2 === 1) bar.classList.add('alt');
+    }
+    bar.innerHTML = `<div class="bar-name">${layer.type === 'audio' ? '<span class="audio-badge">&#9834;</span>' : ''}${layer.name}</div>`;
     if (layer.type === 'video' && layer.thumbs && layer.thumbs.length) {
       const strip = document.createElement('div'); strip.className = 'filmstrip';
       for (const f of layer.thumbs) {
@@ -569,14 +574,14 @@ function buildTimelineRows() {
     if (layer.type === 'audio' && layer.peaks && layer.peaks.length) {
       const cv = document.createElement('canvas'); cv.className = 'wavecv';
       const bw = Math.max(24, Math.round(layer.duration * state.pxPerSec));
-      cv.width = bw; cv.height = 15;
+      cv.width = bw; cv.height = 20;
       const g = cv.getContext('2d'); g.fillStyle = 'rgba(255,255,255,0.88)';
       const pk = layer.peaks, n = pk.length, md = layer.mediaDuration || layer.duration;
       const i0 = Math.floor(((layer.offset || 0) / md) * n), span = Math.max(1, Math.floor((layer.duration / md) * n));
       for (let x = 0; x < bw; x++) {
         const v = pk[Math.min(n - 1, i0 + Math.floor(x / bw * span))] || 0;
-        const bh = Math.max(1, v * 15);
-        g.fillRect(x, (15 - bh) / 2, 1, bh);
+        const bh = Math.max(1, v * 20);
+        g.fillRect(x, (20 - bh) / 2, 1, bh);
       }
       bar.appendChild(cv);
     }
