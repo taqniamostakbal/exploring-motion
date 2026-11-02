@@ -545,7 +545,7 @@ function buildTimeline() {
   const ruler = $('#ruler'); ruler.style.width = w + 'px'; ruler.innerHTML = '';
   for (let s = 0; s <= p.duration; s++) {
     const tick = document.createElement('div'); tick.className = 'tick'; tick.style.left = (s * state.pxPerSec) + 'px';
-    tick.textContent = s + 's'; ruler.appendChild(tick);
+    tick.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); ruler.appendChild(tick);
   }
   buildTimelineRows(); updatePlayhead();
 }
@@ -553,20 +553,40 @@ function buildTimelineRows() {
   const p = state.project, rows = $('#rows'); rows.innerHTML = ''; rows.style.width = (p.duration * state.pxPerSec) + 'px';
   for (const layer of p.layers) {
     const row = document.createElement('div'); row.className = 'tl-row' + (layer.id === state.selectedId ? ' sel' : '');
-    if (layer.type === 'video' || layer.type === 'audio') row.classList.add('tall');
+    if (layer.type === 'video' || layer.type === 'audio' || layer.type === 'image') row.classList.add('tall');
     const bar = document.createElement('div'); bar.className = 'tl-bar' + (layer.type === 'camera' ? ' cam' : layer.type === 'text' ? ' bar-text' : layer.type === 'image' ? ' bar-image' : layer.type === 'video' ? ' bar-video' : layer.type === 'audio' ? ' bar-audio' : layer.type === 'null' ? ' bar-null' : layer.type === 'group' ? ' bar-group' : '');
     bar.style.left = (layer.start * state.pxPerSec) + 'px'; bar.style.width = Math.max(24, layer.duration * state.pxPerSec) + 'px';
+    let audioBadge = '';
     if (layer.type === 'audio') {
       const aIdx = p.layers.slice(0, p.layers.indexOf(layer)).filter(l => l.type === 'audio').length;
-      if (aIdx % 2 === 1) bar.classList.add('alt');
+      bar.classList.add('ag' + (aIdx % 4));
+      audioBadge = aIdx % 2 === 0 ? '<span class="audio-badge">&#9834;</span>'
+        : '<span class="audio-badge"><svg viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.6V5.4L7.5 9.5H4z" fill="#fff" stroke="none"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg></span>';
     }
-    bar.innerHTML = `<div class="bar-name">${layer.type === 'audio' ? '<span class="audio-badge">&#9834;</span>' : ''}${layer.name}</div>`;
-    if (layer.type === 'video' && layer.thumbs && layer.thumbs.length) {
+    bar.innerHTML = `<div class="bar-name">${audioBadge}${layer.name}</div>`;
+    if (layer.type === 'video') {
+      const tab = document.createElement('span'); tab.className = 'strip-tab'; tab.textContent = layer._stripHidden ? '›' : '‹';
+      tab.title = 'Show / hide the filmstrip';
+      tab.addEventListener('pointerdown', ev => ev.stopPropagation());
+      tab.addEventListener('click', ev => { ev.stopPropagation(); layer._stripHidden = !layer._stripHidden; buildTimelineRows(); });
+      bar.appendChild(tab);
+      if (layer._stripHidden) bar.classList.add('strip-off');
+      else if (layer.thumbs && layer.thumbs.length) {
+        const strip = document.createElement('div'); strip.className = 'filmstrip with-tab';
+        for (const f of layer.thumbs) {
+          const im = document.createElement('img'); im.alt = '';
+          im.src = window.bm ? window.bm.fileUrl(f) : f;
+          im.onerror = () => regenerateThumbs(layer);
+          strip.appendChild(im);
+        }
+        bar.insertBefore(strip, bar.firstChild);
+      }
+    }
+    if (layer.type === 'image' && layer.src) {
       const strip = document.createElement('div'); strip.className = 'filmstrip';
-      for (const f of layer.thumbs) {
-        const im = document.createElement('img'); im.alt = '';
-        im.src = window.bm ? window.bm.fileUrl(f) : f;
-        im.onerror = () => regenerateThumbs(layer);
+      const tiles = Math.max(2, Math.ceil((layer.duration * state.pxPerSec) / 86));
+      for (let i = 0; i < tiles; i++) {
+        const im = document.createElement('img'); im.alt = ''; im.src = layer.src;
         strip.appendChild(im);
       }
       bar.insertBefore(strip, bar.firstChild);
@@ -575,13 +595,14 @@ function buildTimelineRows() {
       const cv = document.createElement('canvas'); cv.className = 'wavecv';
       const bw = Math.max(24, Math.round(layer.duration * state.pxPerSec));
       cv.width = bw; cv.height = 20;
-      const g = cv.getContext('2d'); g.fillStyle = 'rgba(255,255,255,0.88)';
+      const g = cv.getContext('2d'); g.fillStyle = 'rgba(255,255,255,0.6)';
       const pk = layer.peaks, n = pk.length, md = layer.mediaDuration || layer.duration;
       const i0 = Math.floor(((layer.offset || 0) / md) * n), span = Math.max(1, Math.floor((layer.duration / md) * n));
-      for (let x = 0; x < bw; x++) {
+      for (let x = 0; x + 3 <= bw; x += 5) {
         const v = pk[Math.min(n - 1, i0 + Math.floor(x / bw * span))] || 0;
-        const bh = Math.max(1, v * 20);
-        g.fillRect(x, (20 - bh) / 2, 1, bh);
+        const bh = Math.max(2, v * 19);
+        if (g.roundRect) { g.beginPath(); g.roundRect(x, 20 - bh, 3.2, bh, 1.6); g.fill(); }
+        else g.fillRect(x, 20 - bh, 3.2, bh);
       }
       bar.appendChild(cv);
     }
