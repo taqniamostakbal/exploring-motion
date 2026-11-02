@@ -1,0 +1,44 @@
+{
+  "name": "exploring-motion",
+  "version": "1.1.0",
+  "description": "Exploring Motion \u2014 professional motion graphics editor for Windows (original clean-room build)",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check src/main.js && node --check src/preload.js && node --check src/renderer.js"
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/win32-x64": "^4.1.0",
+    "electron": "^45.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "fabric": "^5.3.0"
+  },
+  "build": {
+    "appId": "com.exploring.motion",
+    "productName": "Exploring Motion",
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "Exploring-Motion-Portable-${version}.${ext}"
+    },
+    "extraResources": [
+      {
+        "from": "node_modules/@ffmpeg-installer/win32-x64/ffmpeg.exe",
+        "to": "ffmpeg.exe"
+      }
+    ],
+    "files": [
+      "src/**",
+      "!src/**/*.bak-*",
+      "build/**",
+      "package.json"
+    ]
+  }
+}

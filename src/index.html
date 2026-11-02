@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploring Motion</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- ============ ICON RAIL ============ -->
+  <nav id="rail">
+    <div class="rail-logo"><img class="brand-logo" src="assets/logo.png" alt="Exploring Motion"></div>
+    <button class="rail-btn active" data-nav="objects">
+      <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="8" height="8" rx="2" fill="#ffb020"/><circle cx="16.8" cy="7.3" r="3.9" fill="#00c853"/><path d="M12.2 20.8l-4.3-7.6h8.6z" fill="#4dabff"/><path d="M5.8 13.4l1.1 2.3 2.5.3-1.9 1.7.6 2.5-2.3-1.3-2.3 1.3.6-2.5-1.9-1.7 2.5-.3z" fill="#ff5c8a"/></svg>
+      <span>Objects</span>
+    </button>
+    <button class="rail-btn" data-nav="media">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="#cfe8ff"/><circle cx="9" cy="9.6" r="1.9" fill="#ffb020"/><path d="M3.8 17.6l5-4.9 3.4 3.4 3.4-3.3 4.6 4.4v.8a1.5 1.5 0 0 1-1.5 1.5H5.3a1.5 1.5 0 0 1-1.5-1.5z" fill="#00a651"/></svg>
+      <span>Media</span>
+    </button>
+    <button class="rail-btn" data-nav="text">
+      <svg viewBox="0 0 24 24"><path d="M4 4.2h16v4.6h-5.9v11h-4.2v-11H4z" fill="#6d28ff"/></svg>
+      <span>Text</span>
+    </button>
+    <button class="rail-btn" data-nav="layers">
+      <svg viewBox="0 0 24 24"><path d="M12 13.8l8.6 4.4L12 22 3.4 18.2z" fill="#0284c7"/><path d="M12 8.9l8.6 4.4-8.6 4.4-8.6-4.4z" fill="#38bdf8"/><path d="M12 2.5l9 4.7-9 4.7-9-4.7z" fill="#7dd3fc"/></svg>
+      <span>Layers</span>
+    </button>
+    <button class="rail-btn" data-nav="scene">
+      <svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="13" height="10.5" rx="2.5" fill="#ff5c8a"/><path d="M15.5 10.4l6-3.2v9.6l-6-3.2z" fill="#e5484d"/><circle cx="9" cy="12.2" r="2.7" fill="#fff"/><circle cx="9" cy="12.2" r="1.3" fill="#39415c"/></svg>
+      <span>Scene</span>
+    </button>
+    <button class="rail-btn" data-nav="effects">
+      <svg viewBox="0 0 24 24"><path d="M10 3.2l1.7 5.1 5.1 1.7-5.1 1.7L10 16.8l-1.7-5.1L3.2 10l5.1-1.7z" fill="#ffb020"/><path d="M18.6 14.2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z" fill="#ff5c8a"/><circle cx="18.2" cy="5.4" r="1.7" fill="#4dabff"/></svg>
+      <span>Effects</span>
+    </button>
+    <div class="rail-spacer"></div>
+    <div class="rail-brand">EXPLORING<br>MOTION</div>
+  </nav>
+
+  <!-- ============ SIDE PANEL ============ -->
+  <aside id="sidePanel">
+    <section class="nav-page" data-page="objects">
+      <div class="panel-head">Objects</div>
+      <div class="search-row">
+        <input id="objSearch" type="text" placeholder="Search…" spellcheck="false">
+        <button id="objSearchBtn" class="go-btn">Go</button>
+      </div>
+      <div class="group-title">Shapes</div>
+      <div id="shapeGrid" class="tile-grid"></div>
+      <div class="group-title">Text</div>
+      <button id="addTextBig" class="wide-btn">T&nbsp;&nbsp;Add a text layer</button>
+      <div class="group-title">Scene</div>
+      <div class="tile-grid two">
+        <button class="tile" data-add="camera"><svg viewBox="0 0 24 24"><rect x="2.8" y="7" width="12.5" height="10" rx="2.2"/><path d="M15.3 10.8l5.9-3.3v9l-5.9-3.3"/></svg><span>Camera</span></button>
+        <button class="tile" data-add="null"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg><span>Null</span></button>
+        <button class="tile" data-add="group"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke-dasharray="4 3"/><path d="M8 12h8M12 8v8"/></svg><span>Group</span></button>
+      </div>
+    </section>
+
+    <section class="nav-page hidden" data-page="media">
+      <div class="panel-head">Media</div>
+      <button id="importMedia" class="wide-btn accent">Import media…</button>
+          <div class="group-title">Library</div>
+          <div id="mediaBin" class="media-bin"><p class="hint" id="mediaEmpty">Nothing imported yet — imported images land here as thumbnails.</p></div>
+      <p class="hint">Images, video clips and audio become layers you can animate. Click a library item to add it to the scene again.</p>
+      <div class="group-title">Project</div>
+      <div class="kv"><span>Canvas</span><b id="kvCanvas">1920 × 1080</b></div>
+      <div class="kv"><span>Frame rate</span><b>60 fps</b></div>
+      <div class="kv"><span>Duration</span><b id="kvDur">6.0 s</b></div>
+    </section>
+
+    <section class="nav-page hidden" data-page="text">
+      <div class="panel-head">Text</div>
+      <button id="addTextBig2" class="wide-btn">T&nbsp;&nbsp;Add a text layer</button>
+      <p class="hint">Select the text layer, then edit its content, size and fill in the Properties panel. Every text property can be keyframed.</p>
+    </section>
+
+    <section class="nav-page hidden" data-page="layers">
+      <div class="panel-head">Layers <span id="layerCount" class="dim"></span></div>
+      <div id="layerList"></div>
+      <p class="hint">Top row = front. Drag rows to reorder; ▣ locks a layer; ◉ hides it. Children of a Null/Group/Camera are indented.</p>
+    </section>
+
+    <section class="nav-page hidden" data-page="scene">
+      <div class="panel-head">Scene</div>
+      <div class="tile-grid two">
+        <button class="tile" data-add="camera"><svg viewBox="0 0 24 24"><rect x="2.8" y="7" width="12.5" height="10" rx="2.2"/><path d="M15.3 10.8l5.9-3.3v9l-5.9-3.3"/></svg><span>Camera</span></button>
+        <button class="tile" data-add="null"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg><span>Null</span></button>
+        <button class="tile" data-add="group"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke-dasharray="4 3"/><path d="M8 12h8M12 8v8"/></svg><span>Group</span></button>
+      </div>
+      <p class="hint">Give layers a Depth Z in Properties: far layers move slower under the camera — real parallax. The camera itself is keyframed in X / Y / Z. Parent any layer to a Null, Group or Camera from the Parent picker in Properties.</p>
+      <div class="group-title">Canvas size</div>
+      <select id="sizePreset" class="wide-select">
+        <option value="1920x1080">1920 × 1080 · 16:9</option>
+        <option value="1080x1920">1080 × 1920 · 9:16</option>
+        <option value="1080x1080">1080 × 1080 · 1:1</option>
+        <option value="1280x720">1280 × 720 · HD</option>
+      </select>
+    </section>
+
+    <section class="nav-page hidden" data-page="effects">
+      <div class="panel-head">Effects</div>
+      <div class="search-row">
+        <input id="fxSearch" type="text" placeholder="Search effects…" spellcheck="false">
+      </div>
+      <p class="hint" id="fxHint">Select a shape, text or image layer, then click an effect to add it. Parameters can be keyframed with ◆ in Properties.</p>
+      <div id="fxBrowser"></div>
+    </section>
+  </aside>
+
+  <!-- ============ CENTER ============ -->
+  <div id="centerCol">
+    <header id="topbar">
+      <input id="projName" value="Untitled project" spellcheck="false">
+      <div class="top-actions">
+        <button id="btnUndo" class="tbtn icon" title="Undo (Ctrl+Z)"><svg viewBox="0 0 24 24"><path d="M8.5 6.5L5 10l3.5 3.5M5 10h9a5 5 0 0 1 0 10h-2.5"/></svg></button>
+        <button id="btnRedo" class="tbtn icon" title="Redo (Ctrl+Y)"><svg viewBox="0 0 24 24"><path d="M15.5 6.5L19 10l-3.5 3.5M19 10h-9a5 5 0 0 0 0 10h2.5"/></svg></button>
+        <span class="vsep"></span>
+        <button id="btnNew" class="tbtn">New</button>
+        <button id="btnOpen" class="tbtn">Open</button>
+        <button id="btnSave" class="tbtn accent">Save</button>
+        <button id="btnExport" class="tbtn accent">Export</button>
+      </div>
+    </header>
+
+    <main id="workspace">
+      <section id="stageWrap">
+        <div id="stage"><canvas id="cv"></canvas></div>
+        <div id="stageBar"><span id="selInfo" class="dim">No selection</span><span id="camInfo" class="dim"></span></div>
+      </section>
+
+      <aside id="rightPanel">
+        <div class="panel-head">Properties</div>
+        <div id="propsEmpty" class="dim pad">Select a layer to edit its properties.<br><br>◆ toggles a keyframe at the playhead for that property.</div>
+        <div id="propsBody" class="hidden">
+          <div class="prop-row"><label>Name</label><input id="pName" type="text"></div>
+          <div class="prop-row"><label>Type</label><span id="pType" class="dim"></span></div>
+          <div class="prop-row"><label>Parent</label><select id="pParent" class="flex-select"></select></div>
+          <div id="textRows" class="hidden">
+            <div class="prop-row"><label>Text</label><input id="pText" type="text"></div>
+            <div class="prop-row"><label>Font size</label><input id="pFontSize" type="number" min="8" max="400" step="1"></div>
+            <div class="prop-row"><label>Font</label><select id="pFont" class="flex-select"></select></div>
+          </div>
+          <div id="fillRow" class="prop-row"><label>Fill</label><input id="pFill" type="color"></div>
+          <div class="prop-row" id="depthRow"><label>Depth Z</label><input id="pDepth" type="number" step="10"><span class="kf-spacer"></span></div>
+          <div id="propTracks"></div>
+          <div class="prop-row" id="blendRow"><label>Blend</label>
+            <select id="pBlend" class="flex-select">
+              <option value="source-over">Normal</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="darken">Darken</option>
+              <option value="lighten">Lighten</option>
+              <option value="color-dodge">Color Dodge</option>
+              <option value="color-burn">Color Burn</option>
+              <option value="hard-light">Hard Light</option>
+              <option value="soft-light">Soft Light</option>
+              <option value="difference">Difference</option>
+              <option value="exclusion">Exclusion</option>
+              <option value="hue">Hue</option>
+              <option value="saturation">Saturation</option>
+              <option value="color">Color</option>
+              <option value="luminosity">Luminosity</option>
+            </select>
+          </div>
+          <div class="prop-row" id="maskRow"><label>Mask</label>
+            <select id="pMask" class="flex-select">
+              <option value="none">None</option>
+              <option value="rect">Rectangle</option>
+              <option value="ellipse">Ellipse</option>
+            </select>
+          </div>
+          <div class="prop-row" id="maskInvRow"><label>Mask invert</label><input id="pMaskInv" type="checkbox"><span class="kf-spacer"></span></div>
+          <div id="fxSection">
+            <div class="group-title">Effects stack</div>
+            <div id="fxList"></div>
+          </div>
+          <div id="cameraRows" class="hidden">
+            <div class="prop-row"><label>FOV °</label><input id="pFov" type="number" min="10" max="120" step="0.5"><span class="kf-spacer"></span></div>
+            <div class="group-title">Camera moves · 2s from playhead</div>
+            <div class="preset-grid">
+              <button class="tbtn sm" data-preset="dolly-in">Dolly In</button>
+              <button class="tbtn sm" data-preset="dolly-out">Dolly Out</button>
+              <button class="tbtn sm" data-preset="truck-l">Truck ◀</button>
+              <button class="tbtn sm" data-preset="truck-r">Truck ▶</button>
+              <button class="tbtn sm" data-preset="crane-up">Crane Up</button>
+              <button class="tbtn sm" data-preset="crane-down">Crane Down</button>
+              <button class="tbtn sm" data-preset="orbit">Orbit 360°</button>
+            </div>
+            <div class="dim pad-sm">X/Y/Z, Focus depth, DoF blur and Fog are keyframed above. Focus depth = the Depth Z that stays sharp; DoF blurs layers away from it; Fog fades far layers into the scene background. Parent the camera to a Null to drive it from a separate rig.</div>
+          </div>
+          <div class="prop-row spread">
+            <button id="btnDup" class="tbtn">Duplicate</button>
+            <button id="btnDel" class="tbtn danger">Delete layer</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer id="timelineWrap">
+      <div id="transport">
+        <button id="btnStart" class="tbtn sm">|◀</button>
+        <button id="btnPlay" class="tbtn sm accent">▶</button>
+        <span id="timeRead">00:00:00 / 00:06:00</span>
+        <label class="dim">New-key ease
+          <select id="easePreset">
+            <option value="0,0,1,1">Linear</option>
+            <option value="0.42,0,1,1">Ease In</option>
+            <option value="0,0,0.58,1">Ease Out</option>
+            <option value="0.42,0,0.58,1" selected>Ease In-Out</option>
+            <option value="0.68,-0.55,0.27,1.55">Back</option>
+          </select>
+        </label>
+        <button id="btnGraph" class="tbtn sm">Graph Editor</button>
+        <label class="dim">Zoom <input id="tlZoom" type="range" min="40" max="400" value="120"></label>
+      </div>
+      <div id="clipTools" class="hidden">
+        <button id="ctSplit" title="Split layer at playhead"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="6.5" r="2.6"/><circle cx="6.5" cy="17.5" r="2.6"/><path d="M8.7 8.3L20 19M8.7 15.7L20 5"/></svg></button>
+        <button id="ctKey" title="Add keyframes at playhead">◆</button>
+        <button id="ctDup" title="Duplicate layer"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5.5 15h-1A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5v1"/></svg></button>
+        <button id="ctDel" title="Delete layer"><svg viewBox="0 0 24 24"><path d="M4.5 6.5h15M9.8 6.2V4.9A1.4 1.4 0 0 1 11.2 3.5h1.6a1.4 1.4 0 0 1 1.4 1.4v1.3M6.6 6.5l.8 11.7a2 2 0 0 0 2 1.8h5.2a2 2 0 0 0 2-1.8l.8-11.7"/></svg></button>
+      </div>
+      <div id="timeline">
+        <div id="ruler"></div>
+        <div id="rows"></div>
+        <div id="playhead"></div>
+      </div>
+    </footer>
+
+    <section id="graphWrap" class="hidden">
+      <div id="graphHead">
+        <span class="panel-head sm">Graph Editor</span>
+        <div id="graphProps"></div>
+        <span id="graphKeyInfo" class="dim"></span>
+        <select id="graphEase" title="Apply easing preset to the selected key">
+          <option value="0,0,1,1">Linear</option>
+          <option value="0.42,0,1,1">Ease In</option>
+          <option value="0,0,0.58,1">Ease Out</option>
+          <option value="0.42,0,0.58,1">Ease In-Out</option>
+          <option value="0.68,-0.55,0.27,1.55">Back</option>
+        </select>
+        <button id="graphDelKey" class="tbtn sm danger">Delete key</button>
+        <button id="graphClose" class="tbtn sm">Close</button>
+      </div>
+      <canvas id="graphCv"></canvas>
+    </section>
+  </div>
+</div>
+<script src="../node_modules/fabric/dist/fabric.min.js"></script>
+<script src="renderer.js"></script>
+  <div id="exportModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>Export video</h3>
+      <div class="prop-row"><label>Format</label>
+        <select id="expFormat">
+          <option value="mp4">MP4 · H.264</option>
+          <option value="webm">WebM · VP9</option>
+          <option value="gif">GIF</option>
+          <option value="pngseq">PNG sequence</option>
+        </select><span class="kf-spacer"></span>
+      </div>
+      <div class="prop-row"><label>Frame rate</label>
+        <select id="expFps"><option value="24">24 fps</option><option value="30" selected>30 fps</option><option value="60">60 fps</option></select><span class="kf-spacer"></span>
+      </div>
+      <div class="prop-row"><label>Scale</label>
+        <select id="expScale"><option value="1">100% · full size</option><option value="0.5">50%</option></select><span class="kf-spacer"></span>
+      </div>
+      <div class="exp-progress"><div id="expBar"></div></div>
+      <div id="expStatus" class="dim pad-sm">Renders every frame at full project resolution, then encodes with FFmpeg. Null and Group guides are hidden in the export.</div>
+      <div class="prop-row spread">
+        <button id="expCancel" class="tbtn danger hidden">Cancel</button>
+        <span></span>
+        <span>
+          <button id="expClose" class="tbtn">Close</button>
+          <button id="expStart" class="tbtn accent">Start export</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
